@@ -105,7 +105,6 @@ public class LogInDialog extends JDialog {
 				
 			}
 		});
-		
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
 		gl_contentPanel.setHorizontalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
