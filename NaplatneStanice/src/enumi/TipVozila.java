@@ -1,0 +1,5 @@
+package enumi;
+
+public enum TipVozila {
+	KATEGORIJA1A, KATEGORIJA1, KATEGORIJA2, KATEGORIJA3, KATEGORIJA4;
+}
