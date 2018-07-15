@@ -7,7 +7,7 @@ import enumi.SmerMotora;
 import enumi.TipValute;
 import enumi.TipVozila;
 
-public abstract class NaplatnoMesto implements Serializable{
+public abstract class NaplatnoMesto implements Serializable {
 	/**
 	 * 
 	 */
@@ -16,7 +16,7 @@ public abstract class NaplatnoMesto implements Serializable{
 	protected double udaljenostVozila;
 	protected boolean aktivna;
 	public StanjeRampe stanjeRampe;
-	protected NaplatnaStanica nplatnaStanica;
+	protected NaplatnaStanica naplatnaStanica;
 
 	protected void ukljuciMotor(SmerMotora smer) {
 
@@ -45,20 +45,21 @@ public abstract class NaplatnoMesto implements Serializable{
 	protected void promenaUdaljenosti(double udaljenosti) {
 		// TODO: implement
 	}
-	
+
 	protected void zabeleziGresku() {
-		
+
 	}
 
 	public abstract void izvrsiTransakciju(TipVozila tipVozila, TipValute tipValute, double vrednost, Date datum);
 
-	public NaplatnoMesto(int idMesta, double udaljenostVozila, boolean aktivna, StanjeRampe stanjeRampe, NaplatnaStanica na) {
+	public NaplatnoMesto(int idMesta, double udaljenostVozila, boolean aktivna, StanjeRampe stanjeRampe,
+			NaplatnaStanica na) {
 		super();
 		this.idMesta = idMesta;
 		this.udaljenostVozila = udaljenostVozila;
 		this.aktivna = aktivna;
 		this.stanjeRampe = stanjeRampe;
-		this.nplatnaStanica = na;
+		this.naplatnaStanica = na;
 	}
 
 	public NaplatnoMesto() {
@@ -97,13 +98,12 @@ public abstract class NaplatnoMesto implements Serializable{
 		this.stanjeRampe = stanjeRampe;
 	}
 
-	public NaplatnaStanica getNplatnaStanica() {
-		return nplatnaStanica;
+	public NaplatnaStanica getNaplatnaStanica() {
+		return naplatnaStanica;
 	}
 
-	public void setNplatnaStanica(NaplatnaStanica nplatnaStanica) {
-		this.nplatnaStanica = nplatnaStanica;
+	public void setNplatnaStanica(NaplatnaStanica naplatnaStanica) {
+		this.naplatnaStanica = naplatnaStanica;
 	}
-	
-	
+
 }

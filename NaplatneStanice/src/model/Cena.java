@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import enumi.TipVozila;
 
-public class Cena implements Serializable{
+public class Cena implements Serializable {
 	/**
 	 * 
 	 */
@@ -50,4 +50,3 @@ public class Cena implements Serializable{
 		this.tipVozila = tipVozila;
 	}
 }
-

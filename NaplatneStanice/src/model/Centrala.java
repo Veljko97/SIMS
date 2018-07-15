@@ -6,9 +6,7 @@ import java.io.FileReader;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Random;
 
-import enumi.TipRadnika;
 import enumi.TipValute;
 import enumi.TipVozila;
 import io.Readers;
@@ -27,14 +25,15 @@ public class Centrala implements Serializable {
 	private ArrayList<Grad> gradovi;
 	private ArrayList<Deonica> deonice;
 	private static Centrala single;
-	
+	private ArrayList<Transakcija> transakcije;
+
 	private Centrala() {
 		this.radnici = Readers.radniciReader();
 		this.naplatneStanice = Readers.staniceReader();
 		this.gradovi = Readers.gradReader();
 		this.deonice = Readers.deonicaReader();
 	}
-	
+
 	public void end() {
 		Writers.deonicaWriter(deonice);
 		Writers.staniceWriter(naplatneStanice);
@@ -49,80 +48,90 @@ public class Centrala implements Serializable {
 		return single;
 	}
 
+	public Radnik nadjiRadnika(String korisnickoIme) {
+		for (Radnik radnik : this.radnici) {
+			if (radnik.getKorisnickoIme().equals(korisnickoIme)) {
+				return radnik;
+			}
+		}
+		return null;
+	}
+
 	public void dodajRadnika(Radnik rad) {
 		this.radnici.add(rad);
 	}
-	
-	
-	public void obrisiRadnika(double jmbg){
+
+	public void obrisiRadnika(double jmbg) {
 		for (Radnik radnik : this.radnici) {
-			if (radnik.getJmbg() == jmbg){
+			if (radnik.getJmbg() == jmbg) {
 				this.radnici.remove(radnik);
 				break;
 			}
 		}
 	}
-	
-	public void dodajStanicu(int idGrad){
+
+	public void dodajStanicu(int idGrad) {
 		Grad grad = new Grad();
 		boolean flag = false;
-		for(Grad g:gradovi) {
-			if(idGrad == g.getPostanskiBroj()) {
+		for (Grad g : gradovi) {
+			if (idGrad == g.getPostanskiBroj()) {
 				grad = g;
 				flag = true;
 			}
 		}
 		if (flag) {
-			naplatneStanice.add(new NaplatnaStanica(idStanica++, grad));
+			naplatneStanice.add(new NaplatnaStanica(idStanica++, grad, this));
 		}
 	}
-	
+
 	public void dodajGrad(int postanskiBroj, String naziv) {
-		gradovi.add(new Grad(postanskiBroj,naziv));
+		gradovi.add(new Grad(postanskiBroj, naziv));
 	}
-	
+
 	public void dodajDeonicu(double udaljenost, int polazniGrad, int odredisniGrad) {
 		Grad pGrad = new Grad();
 		Grad oGrad = new Grad();
 		boolean flagP = false;
 		boolean flagO = false;
-		for(Grad g:gradovi) {
-			if(polazniGrad == g.getPostanskiBroj()) {
+		for (Grad g : gradovi) {
+			if (polazniGrad == g.getPostanskiBroj()) {
 				pGrad = g;
 				flagP = true;
 			}
-			if(odredisniGrad == g.getPostanskiBroj()) {
+			if (odredisniGrad == g.getPostanskiBroj()) {
 				oGrad = g;
 				flagO = true;
 			}
 		}
-		if(flagP && flagO) {
-			Deonica deo = new Deonica(idDeonica++,udaljenost, pGrad, oGrad);
+		if (flagP && flagO) {
+			Deonica deo = new Deonica(idDeonica++, udaljenost, pGrad, oGrad);
 			deonice.add(deo);
-			for(NaplatnaStanica ns : naplatneStanice) {
-				if(ns.getGrad().equals(pGrad) || ns.getGrad().equals(oGrad)) {
+			for (NaplatnaStanica ns : naplatneStanice) {
+				if (ns.getGrad().equals(pGrad) || ns.getGrad().equals(oGrad)) {
 					ns.dodajDeonicu(deo);
 				}
 			}
 		}
 	}
-	
-	public ArrayList<Transakcija> detaljanIzvestaj(){
+
+	public ArrayList<Transakcija> detaljanIzvestaj() {
 		ArrayList<Transakcija> trans = new ArrayList<Transakcija>();
 		String line;
 		String files[];
 		String tokens[];
 		File file = new File("Centrala");
 		files = file.list();
-		if(file.exists()) {
+		if (file.exists()) {
 			try {
-				for(String st:files) {
-					if(new File("Centrala\\" + st).isDirectory()) {
+				for (String st : files) {
+					if (new File("Centrala\\" + st).isDirectory()) {
 						file = new File("Centrala\\" + st + "\\transakcije.txt");
 						BufferedReader br = new BufferedReader(new FileReader(file));
-						while((line = br.readLine()) != null) {
+						while ((line = br.readLine()) != null) {
 							tokens = line.split("\\|");
-							trans.add(new Transakcija(Integer.parseInt(tokens[0]), Integer.parseInt(tokens[1]), TipVozila.valueOf(tokens[2]), new Date(Long.parseLong(tokens[3])), Double.parseDouble(tokens[4]), TipValute.valueOf(tokens[5])));
+							trans.add(new Transakcija(Integer.parseInt(tokens[0]), Integer.parseInt(tokens[1]),
+									TipVozila.valueOf(tokens[2]), new Date(Long.parseLong(tokens[3])),
+									Double.parseDouble(tokens[4]), TipValute.valueOf(tokens[5])));
 						}
 						br.close();
 					}
@@ -134,8 +143,8 @@ public class Centrala implements Serializable {
 		}
 		return trans;
 	}
-	
-	public ArrayList<Transakcija> izvestajTipaVozila(TipVozila tipVozila){
+
+	public ArrayList<Transakcija> izvestajTipaVozila(TipVozila tipVozila) {
 		ArrayList<Transakcija> trans = new ArrayList<Transakcija>();
 		Transakcija tran;
 		String[] files;
@@ -144,14 +153,16 @@ public class Centrala implements Serializable {
 		File file = new File("Centrala");
 		files = file.list();
 		try {
-			for(String st:files) {
-				if(new File("Centrala\\" + st).isDirectory()) {
+			for (String st : files) {
+				if (new File("Centrala\\" + st).isDirectory()) {
 					file = new File("Centrala\\" + st + "\\transakcije.txt");
 					BufferedReader br = new BufferedReader(new FileReader(file));
-					while((line = br.readLine()) != null) {
+					while ((line = br.readLine()) != null) {
 						tokens = line.split("\\|");
-						tran = new Transakcija(Integer.parseInt(tokens[0]), Integer.parseInt(tokens[1]), TipVozila.valueOf(tokens[2]), new Date(Long.parseLong(tokens[3])), Double.parseDouble(tokens[4]), TipValute.valueOf(tokens[5]));
-						if(tran.getVrstaVozila() == tipVozila) {
+						tran = new Transakcija(Integer.parseInt(tokens[0]), Integer.parseInt(tokens[1]),
+								TipVozila.valueOf(tokens[2]), new Date(Long.parseLong(tokens[3])),
+								Double.parseDouble(tokens[4]), TipValute.valueOf(tokens[5]));
+						if (tran.getVrstaVozila() == tipVozila) {
 							trans.add(tran);
 						}
 					}
@@ -165,7 +176,7 @@ public class Centrala implements Serializable {
 		return trans;
 	}
 
-	public ArrayList<Transakcija> izvestajTipValute(TipValute tipValute){
+	public ArrayList<Transakcija> izvestajTipValute(TipValute tipValute) {
 		ArrayList<Transakcija> trans = new ArrayList<Transakcija>();
 		Transakcija tran;
 		String[] files;
@@ -174,14 +185,16 @@ public class Centrala implements Serializable {
 		File file = new File("Centrala");
 		files = file.list();
 		try {
-			for(String st:files) {
-				if(new File("Centrala\\" + st).isDirectory()) {
+			for (String st : files) {
+				if (new File("Centrala\\" + st).isDirectory()) {
 					file = new File("Centrala\\" + st + "\\transakcije.txt");
 					BufferedReader br = new BufferedReader(new FileReader(file));
-					while((line = br.readLine()) != null) {
+					while ((line = br.readLine()) != null) {
 						tokens = line.split("\\|");
-						tran = new Transakcija(Integer.parseInt(tokens[0]), Integer.parseInt(tokens[1]), TipVozila.valueOf(tokens[2]), new Date(Long.parseLong(tokens[3])), Double.parseDouble(tokens[4]), TipValute.valueOf(tokens[5]));
-						if(tran.getTipValute() == tipValute) {
+						tran = new Transakcija(Integer.parseInt(tokens[0]), Integer.parseInt(tokens[1]),
+								TipVozila.valueOf(tokens[2]), new Date(Long.parseLong(tokens[3])),
+								Double.parseDouble(tokens[4]), TipValute.valueOf(tokens[5]));
+						if (tran.getTipValute() == tipValute) {
 							trans.add(tran);
 						}
 					}
@@ -194,8 +207,8 @@ public class Centrala implements Serializable {
 		}
 		return trans;
 	}
-	
-	public ArrayList<Transakcija> izvestajDatum(Date pocetni, Date krajni){
+
+	public ArrayList<Transakcija> izvestajDatum(Date pocetni, Date krajni) {
 		ArrayList<Transakcija> trans = new ArrayList<Transakcija>();
 		Transakcija tran;
 		String[] files;
@@ -204,14 +217,16 @@ public class Centrala implements Serializable {
 		File file = new File("Centrala");
 		files = file.list();
 		try {
-			for(String st:files) {
-				if(new File("Centrala\\" + st).isDirectory()) {
+			for (String st : files) {
+				if (new File("Centrala\\" + st).isDirectory()) {
 					file = new File("Centrala\\" + st + "\\transakcije.txt");
 					BufferedReader br = new BufferedReader(new FileReader(file));
-					while((line = br.readLine()) != null) {
+					while ((line = br.readLine()) != null) {
 						tokens = line.split("\\|");
-						tran = new Transakcija(Integer.parseInt(tokens[0]), Integer.parseInt(tokens[1]), TipVozila.valueOf(tokens[2]), new Date(Long.parseLong(tokens[3])), Double.parseDouble(tokens[4]), TipValute.valueOf(tokens[5]));
-						if(tran.getVremeTransakcije().before(krajni) && tran.getVremeTransakcije().after(pocetni)) {
+						tran = new Transakcija(Integer.parseInt(tokens[0]), Integer.parseInt(tokens[1]),
+								TipVozila.valueOf(tokens[2]), new Date(Long.parseLong(tokens[3])),
+								Double.parseDouble(tokens[4]), TipValute.valueOf(tokens[5]));
+						if (tran.getVremeTransakcije().before(krajni) && tran.getVremeTransakcije().after(pocetni)) {
 							trans.add(tran);
 						}
 					}
@@ -280,5 +295,25 @@ public class Centrala implements Serializable {
 	public void setDeonice(ArrayList<Deonica> deonice) {
 		this.deonice = deonice;
 	}
-	
+
+	public static Centrala getSingle() {
+		return single;
+	}
+
+	public static void setSingle(Centrala single) {
+		Centrala.single = single;
+	}
+
+	public ArrayList<Transakcija> getTransakcije() {
+		return transakcije;
+	}
+
+	public void setTransakcije(ArrayList<Transakcija> transakcije) {
+		this.transakcije = transakcije;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 }

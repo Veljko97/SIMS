@@ -21,8 +21,9 @@ public class FizickaNaplata extends NaplatnoMesto {
 
 	@Override
 	public void izvrsiTransakciju(TipVozila tipVozila, TipValute tipValute, double vrednost, Date datum) {
-		Transakcija transakcija = new Transakcija(this.nplatnaStanica.getIdStanice(), this.idMesta, tipVozila, datum, vrednost, tipValute);
-		File file = new File("Centrala\\"+this.nplatnaStanica.getIdStanice()+"\\transakcije.txt");
+		Transakcija transakcija = new Transakcija(this.naplatnaStanica.getIdStanice(), this.idMesta, tipVozila, datum, vrednost, tipValute);
+		this.getNaplatnaStanica().getCentrala().getTransakcije().add(transakcija);
+		File file = new File("Centrala\\"+this.naplatnaStanica.getIdStanice()+"\\transakcije.txt");
 		if(file.exists()) {
 			try {
 				FileWriter fw = new FileWriter(file,true);

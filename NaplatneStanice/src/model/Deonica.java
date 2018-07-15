@@ -31,7 +31,7 @@ public class Deonica implements Serializable{
 
 	public void dodajCenovnik(Date datumAktivnosti) {
 		int lastId = -1;
-		for(Cenovnik cen : cenovnik) {
+		for(Cenovnik cen : this.cenovnik) {
 			if(cen.getIdCenovnika() > lastId) {
 				lastId = cen.getIdCenovnika();
 			}
@@ -41,15 +41,19 @@ public class Deonica implements Serializable{
 	}
 
 	public void obrisiCenovnik(int idCenovnika) {
-		for(Cenovnik cen : cenovnik) {
+		for(Cenovnik cen : this.cenovnik) {
 			if(cen.getIdCenovnika()==idCenovnika) {
-				cenovnik.remove(cen);
+				this.cenovnik.remove(cen);
 			}
 		}
 	}
 
-	public void izmeniCenovnik() {
-
+	public void izmeniCenovnik(int idCenovnika, Date noviDatum) {
+		for(Cenovnik cen : this.cenovnik) {
+			if(cen.getIdCenovnika()==idCenovnika) {
+				cen.setDatumAktivnosti(noviDatum);
+			}
+		}
 	}
 
 	public double getUdaljenost() {

@@ -1,16 +1,5 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.Date;
-
-import enumi.TipNaplatnogMesta;
-import enumi.TipRadnika;
-import enumi.TipValute;
-import enumi.TipVozila;
-import gui.LogInDialog;
-import gui.dodavanjeCene;
-import io.Readers;
-
 public class Main {
 
 	public static void main(String[] args) {

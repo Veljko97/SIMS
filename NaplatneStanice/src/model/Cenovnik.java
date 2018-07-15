@@ -1,33 +1,26 @@
 package model;
 
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
 import enumi.TipVozila;
 
-public class Cenovnik implements Serializable{
-	/**
-	 * 
-	 */
+public class Cenovnik implements Serializable {
+
 	private static final long serialVersionUID = 1L;
-
 	private Date datumAktivnosti;
-	
 	private int idCenovnika;
-	
 	private boolean aktivnost;
-
 	public ArrayList<Cena> cena;
-	
-	public Cenovnik(int idCenovnika,Date datumAktivnosti) {
+
+	public Cenovnik(int idCenovnika, Date datumAktivnosti) {
 		super();
 		this.idCenovnika = idCenovnika;
 		this.datumAktivnosti = datumAktivnosti;
-		if(datumAktivnosti.after(new Date())) {
+		if (datumAktivnosti.after(new Date())) {
 			this.aktivnost = false;
-		}else {
+		} else {
 			this.aktivnost = true;
 		}
 		this.cena = new ArrayList<Cena>();
@@ -35,34 +28,34 @@ public class Cenovnik implements Serializable{
 
 	public void dodajCenu(double dinarCena, double evroCena, TipVozila tipVozila) {
 		boolean flag = false;
-		for(Cena c:cena) {
-			if(c.getTipVozila() == tipVozila) {
+		for (Cena c : cena) {
+			if (c.getTipVozila() == tipVozila) {
 				flag = true;
 				break;
 			}
 		}
-		if(!flag) {
-			cena.add(new Cena(dinarCena,evroCena,tipVozila));
+		if (!flag) {
+			cena.add(new Cena(dinarCena, evroCena, tipVozila));
 		}
 	}
 
 	public void obrisiCenu(TipVozila tipVozila) {
-		for(Cena c:cena) {
-			if(c.getTipVozila() == tipVozila) {
+		for (Cena c : cena) {
+			if (c.getTipVozila() == tipVozila) {
 				cena.remove(c);
 			}
 		}
 	}
 
 	public void izmeniCenu(TipVozila tipVozila, double dinarCena, double evroCena) {
-		for(Cena c:cena) {
-			if(c.getTipVozila() == tipVozila) {
+		for (Cena c : cena) {
+			if (c.getTipVozila() == tipVozila) {
 				c.setDinarCena(dinarCena);
 				c.setEvroCena(evroCena);
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -108,7 +101,5 @@ public class Cenovnik implements Serializable{
 	public void setCena(ArrayList<Cena> cena) {
 		this.cena = cena;
 	}
-	
-	
-}
 
+}
