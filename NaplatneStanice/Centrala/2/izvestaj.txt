@@ -1,0 +1,2 @@
+Transakcija [idStanice=2, idMesta=1, vrstaVozila=KATEGORIJA3, vremeTransakcije=Sun Jul 15 04:52:47 CEST 2018, cena=160.0, tipValute=EVRO]
+Transakcija [idStanice=2, idMesta=1, vrstaVozila=KATEGORIJA2, vremeTransakcije=Sun Jul 15 04:54:10 CEST 2018, cena=140.0, tipValute=EVRO]

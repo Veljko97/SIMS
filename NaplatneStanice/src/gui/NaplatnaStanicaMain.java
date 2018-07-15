@@ -10,6 +10,7 @@ import com.jgoodies.forms.layout.RowSpec;
 import enumi.TipRadnika;
 import enumi.TipValute;
 import enumi.TipVozila;
+import model.Cena;
 import model.Cenovnik;
 import model.Centrala;
 import model.Deonica;
@@ -51,10 +52,11 @@ public class NaplatnaStanicaMain {
 			public void run() {
 				try {
 					LogInDialog login = new LogInDialog();
-					login.returnValue(TipRadnika.administrator);
-					NaplatnaStanicaMain window = new NaplatnaStanicaMain();
-					
-					window.frame.setVisible(true);
+					if(login.returnValue(TipRadnika.RADNIKNAPLATE)) {
+						NaplatnaStanicaMain window = new NaplatnaStanicaMain();
+						window.frame.setVisible(true);
+						Centrala.getInstance().end();
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -194,8 +196,11 @@ public class NaplatnaStanicaMain {
 				for(Deonica deo : naplatna.getDeonice()) {
 					if(deo.getIdDeonice() == Integer.parseInt(txtIddeonice.getText())) {
 						dodavanjeCene c = new dodavanjeCene();
-						deo.dodajCenovnik(new Date());
-						deo.getCenovnik().get(deo.getCenovnik().size()-1).setCena(c.returnValue());
+						ArrayList<Cena> cene = c.returnValue();
+						if(!cene.isEmpty()) {
+							deo.dodajCenovnik(new Date());
+							deo.getCenovnik().get(deo.getCenovnik().size()-1).setCena(cene);
+						}
 					}
 				}
 				

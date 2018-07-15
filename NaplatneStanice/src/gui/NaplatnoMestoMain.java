@@ -48,10 +48,12 @@ public class NaplatnoMestoMain {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					NaplatnoMestoMain window = new NaplatnoMestoMain();
 					LogInDialog login = new LogInDialog();
-					login.returnValue(TipRadnika.administrator);
-					window.frame.setVisible(true);
+					if(login.returnValue(TipRadnika.SEFSTANICE)) {
+						NaplatnoMestoMain window = new NaplatnoMestoMain();
+						window.frame.setVisible(true);
+						Centrala.getInstance().end();
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

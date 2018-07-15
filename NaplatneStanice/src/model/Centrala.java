@@ -49,9 +49,10 @@ public class Centrala implements Serializable {
 		return single;
 	}
 
-	public void dodajRadnika(String ime, String prezime, String korisnickoIme, String sifra, double jmbg, TipRadnika tipRadnika, int idRadnogMesta) {
-		this.radnici.add(new Radnik(ime, prezime,korisnickoIme, sifra, jmbg, tipRadnika,idRadnogMesta));
+	public void dodajRadnika(Radnik rad) {
+		this.radnici.add(rad);
 	}
+	
 	
 	public void obrisiRadnika(double jmbg){
 		for (Radnik radnik : this.radnici) {

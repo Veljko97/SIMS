@@ -1,2 +1,2 @@
-Admin|Admin|admin|1.23456789E9|administrator|92668782|2
-Admin|Admin|admin|1.23456789E9|administrator|92668782|1
+Admin|Admin|admin|1.23456789E9|ADMINISTRATOR|92668782|2
+Admin|Admin|admin|1.23456789E9|ADMINISTRATOR|92668782|1
