@@ -7,20 +7,24 @@ import enumi.TipVozila;
 
 public class ElektronskaNaplata extends NaplatnoMesto {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4647673374563802844L;
+
 	public ElektronskaNaplata() {
 		super();
 
 	}
 
-	public ElektronskaNaplata(int idMesta, double udaljenostVozila, boolean aktivna, StanjeRampe stanjeRampe) {
-		super(idMesta, udaljenostVozila, aktivna, stanjeRampe);
+	public ElektronskaNaplata(int idMesta, NaplatnaStanica na) {
+		super(idMesta, 0, true, new Spustena(), na);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public void izvrsiTransakciju(int idStanice, int idMesta, TipVozila tipVozila, TipValute tipValute, double vrednost, Date datum) {
-		Transakcija transakcija = new Transakcija(idStanice, idMesta, tipVozila, datum, vrednost, tipValute);
-
+	public void izvrsiTransakciju(TipVozila tipVozila, TipValute tipValute, double vrednost, Date datum) {
+		System.out.println("Nije implementirano!");
 	}
 
 }

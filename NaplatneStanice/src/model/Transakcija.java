@@ -29,6 +29,17 @@ public class Transakcija {
 	public Transakcija() {
 		super();
 	}
+	
+	public String write() {
+		return "" + idStanice + "|" + idMesta + "|" + vrstaVozila + "|" + vremeTransakcije.getTime() + "|" + cena + "|" + tipValute;
+	}
+	
+	
+	@Override
+	public String toString() {
+		return "Transakcija [idStanice=" + idStanice + ", idMesta=" + idMesta + ", vrstaVozila=" + vrstaVozila
+				+ ", vremeTransakcije=" + vremeTransakcije + ", cena=" + cena + ", tipValute=" + tipValute + "]";
+	}
 
 	public TipVozila getVrstaVozila() {
 		return vrstaVozila;

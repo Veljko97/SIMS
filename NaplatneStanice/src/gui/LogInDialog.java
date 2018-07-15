@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import enumi.TipRadnika;
+import model.Centrala;
 import model.Radnik;
 import model.Utill;
 
@@ -36,6 +37,7 @@ public class LogInDialog extends JDialog {
 	boolean uspesno = false;
 	int trys = 0;
 	TipRadnika tipRadnika;
+	Centrala cent = Centrala.getInstance();
 
 	public boolean returnValue(TipRadnika tipRadnika) {
 		setVisible(true);
@@ -75,13 +77,14 @@ public class LogInDialog extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					BufferedReader br = new BufferedReader(new FileReader(new File("centrala\\Radnici.txt")));
+					BufferedReader br = new BufferedReader(new FileReader(new File("Centrala\\Radnici.txt")));
 					String line;
 					while((line = br.readLine()) != null) {
 						String[] token = line.split("\\|");
 						if(token[2].equals(frmtdtxtfldKorisnickoIme.getText())) {
 							if(Integer.parseInt(token[5]) == Utill.passworGenerator(pwdSifra.getText())) {
 								uspesno = true;
+								cent.setUlogovani(new Radnik(token[0], token[1], token[2], Integer.parseInt(token[5]), Double.parseDouble(token[3]), TipRadnika.valueOf(token[4]),Integer.parseInt(token[6])));
 								break;
 							}else {
 								lblPogresnaSifra.setVisible(true);

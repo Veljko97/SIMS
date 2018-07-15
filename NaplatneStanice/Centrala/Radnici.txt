@@ -1,1 +1,2 @@
-Prvi|Prvi|Admin|1.234567890123E12|administrator|63116110
+Admin|Admin|admin|1.23456789E9|administrator|92668782|2
+Admin|Admin|admin|1.23456789E9|administrator|92668782|1

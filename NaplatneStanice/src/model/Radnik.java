@@ -9,18 +9,30 @@ public class Radnik {
    private int sifra;
    private double jmbg;
    private TipRadnika tipRadnika;
+   private int idRadnogMesta;
 
-   public Radnik(String ime, String prezime, String korisnickoIme, String sifra, double jmbg, TipRadnika tipRadnika) {
+   public Radnik(String ime, String prezime, String korisnickoIme, String sifra, double jmbg, TipRadnika tipRadnika, int idRadnogMesta) {
 		this.ime = ime;
 		this.prezime = prezime;
 		this.korisnickoIme = korisnickoIme;
 		this.jmbg = jmbg;
 		this.tipRadnika = tipRadnika;
 		this.sifra = Utill.passworGenerator(sifra);
+		this.idRadnogMesta = idRadnogMesta;
    }
    
+   public Radnik(String ime, String prezime, String korisnickoIme, int sifra, double jmbg, TipRadnika tipRadnika, int idRadnogMesta) {
+		this.ime = ime;
+		this.prezime = prezime;
+		this.korisnickoIme = korisnickoIme;
+		this.jmbg = jmbg;
+		this.tipRadnika = tipRadnika;
+		this.sifra = sifra;
+		this.idRadnogMesta = idRadnogMesta;
+  }
+   
    public String write() {
-	   return ime+"|"+ prezime +"|"+ korisnickoIme+"|"+ jmbg+"|"+ tipRadnika + "|" + sifra;
+	   return ime+"|"+ prezime +"|"+ korisnickoIme+"|"+ jmbg+"|"+ tipRadnika.toString() + "|" + sifra + "|" + idRadnogMesta;
    }
    
 	@Override
@@ -75,6 +87,22 @@ public class Radnik {
 
 	public void setTipRadnika(TipRadnika tipRadnika) {
 		this.tipRadnika = tipRadnika;
+	}
+
+	public int getSifra() {
+		return sifra;
+	}
+
+	public void setSifra(int sifra) {
+		this.sifra = sifra;
+	}
+
+	public int getIdRadnogMesta() {
+		return idRadnogMesta;
+	}
+
+	public void setIdRadnogMesta(int idRadnogMesta) {
+		this.idRadnogMesta = idRadnogMesta;
 	}
       
 }

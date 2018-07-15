@@ -1,68 +1,114 @@
 package model;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
 import enumi.TipVozila;
 
-public class Cenovnik {
-	private Date datumAktivnosti;
+public class Cenovnik implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
+	private Date datumAktivnosti;
+	
+	private int idCenovnika;
+	
 	private boolean aktivnost;
 
 	public ArrayList<Cena> cena;
+	
+	public Cenovnik(int idCenovnika,Date datumAktivnosti) {
+		super();
+		this.idCenovnika = idCenovnika;
+		this.datumAktivnosti = datumAktivnosti;
+		if(datumAktivnosti.after(new Date())) {
+			this.aktivnost = false;
+		}else {
+			this.aktivnost = true;
+		}
+		this.cena = new ArrayList<Cena>();
+	}
 
 	public void dodajCenu(double dinarCena, double evroCena, TipVozila tipVozila) {
-		// TODO: implement
+		boolean flag = false;
+		for(Cena c:cena) {
+			if(c.getTipVozila() == tipVozila) {
+				flag = true;
+				break;
+			}
+		}
+		if(!flag) {
+			cena.add(new Cena(dinarCena,evroCena,tipVozila));
+		}
 	}
 
 	public void obrisiCenu(TipVozila tipVozila) {
-		// TODO: implement
+		for(Cena c:cena) {
+			if(c.getTipVozila() == tipVozila) {
+				cena.remove(c);
+			}
+		}
 	}
 
 	public void izmeniCenu(TipVozila tipVozila, double dinarCena, double evroCena) {
-		// TODO: implement
+		for(Cena c:cena) {
+			if(c.getTipVozila() == tipVozila) {
+				c.setDinarCena(dinarCena);
+				c.setEvroCena(evroCena);
+			}
+		}
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Cenovnik other = (Cenovnik) obj;
+		if (idCenovnika != other.idCenovnika)
+			return false;
+		return true;
 	}
 
-	public java.util.Collection<Cena> getCena() {
-		if (cena == null)
-			cena = new ArrayList<Cena>();
+	public Date getDatumAktivnosti() {
+		return datumAktivnosti;
+	}
+
+	public void setDatumAktivnosti(Date datumAktivnosti) {
+		this.datumAktivnosti = datumAktivnosti;
+	}
+
+	public boolean isAktivnost() {
+		return aktivnost;
+	}
+
+	public void setAktivnost(boolean aktivnost) {
+		this.aktivnost = aktivnost;
+	}
+
+	public int getIdCenovnika() {
+		return idCenovnika;
+	}
+
+	public void setIdCenovnika(int idCenovnika) {
+		this.idCenovnika = idCenovnika;
+	}
+
+	public ArrayList<Cena> getCena() {
 		return cena;
 	}
 
-	public java.util.Iterator getIteratorCena() {
-		if (cena == null)
-			cena = new ArrayList<Cena>();
-		return cena.iterator();
+	public void setCena(ArrayList<Cena> cena) {
+		this.cena = cena;
 	}
-
-	public void setCena(ArrayList<Cena> newCena) {
-		removeAllCena();
-		for (java.util.Iterator iter = newCena.iterator(); iter.hasNext();)
-			addCena((Cena) iter.next());
-	}
-
-	public void addCena(Cena newCena) {
-		if (newCena == null)
-			return;
-		if (this.cena == null)
-			this.cena = new ArrayList<Cena>();
-		if (!this.cena.contains(newCena))
-			this.cena.add(newCena);
-	}
-
-	public void removeCena(Cena oldCena) {
-		if (oldCena == null)
-			return;
-		if (this.cena != null)
-			if (this.cena.contains(oldCena))
-				this.cena.remove(oldCena);
-	}
-
-	public void removeAllCena() {
-		if (cena != null)
-			cena.clear();
-	}
+	
+	
 }
 

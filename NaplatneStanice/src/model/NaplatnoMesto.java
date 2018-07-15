@@ -1,16 +1,22 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import enumi.SmerMotora;
 import enumi.TipValute;
 import enumi.TipVozila;
 
-public abstract class NaplatnoMesto {
+public abstract class NaplatnoMesto implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3065123934541241680L;
 	protected int idMesta;
 	protected double udaljenostVozila;
 	protected boolean aktivna;
 	public StanjeRampe stanjeRampe;
+	protected NaplatnaStanica nplatnaStanica;
 
 	protected void ukljuciMotor(SmerMotora smer) {
 
@@ -44,14 +50,15 @@ public abstract class NaplatnoMesto {
 		
 	}
 
-	public abstract void izvrsiTransakciju(int idStanice, int idMesta, TipVozila tipVozila, TipValute tipValute, double vrednost, Date datum);
+	public abstract void izvrsiTransakciju(TipVozila tipVozila, TipValute tipValute, double vrednost, Date datum);
 
-	public NaplatnoMesto(int idMesta, double udaljenostVozila, boolean aktivna, StanjeRampe stanjeRampe) {
+	public NaplatnoMesto(int idMesta, double udaljenostVozila, boolean aktivna, StanjeRampe stanjeRampe, NaplatnaStanica na) {
 		super();
 		this.idMesta = idMesta;
 		this.udaljenostVozila = udaljenostVozila;
 		this.aktivna = aktivna;
 		this.stanjeRampe = stanjeRampe;
+		this.nplatnaStanica = na;
 	}
 
 	public NaplatnoMesto() {
@@ -90,4 +97,13 @@ public abstract class NaplatnoMesto {
 		this.stanjeRampe = stanjeRampe;
 	}
 
+	public NaplatnaStanica getNplatnaStanica() {
+		return nplatnaStanica;
+	}
+
+	public void setNplatnaStanica(NaplatnaStanica nplatnaStanica) {
+		this.nplatnaStanica = nplatnaStanica;
+	}
+	
+	
 }
